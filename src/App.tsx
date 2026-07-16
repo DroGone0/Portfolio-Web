@@ -1,106 +1,135 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
-  ArrowDown,
+  ArrowDownRight,
+  ArrowRight,
   ArrowUpRight,
   BriefcaseBusiness,
   Check,
-  Cloud,
+  CircleDot,
   Code2,
-  Cpu,
   Download,
   GraduationCap,
   Mail,
   Menu,
-  Network,
-  Radio,
-  Route,
-  Server,
-  ShieldCheck,
   Sparkles,
-  TerminalSquare,
   X,
 } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
-import { navItems, primaryTechnologies, projects, skillDomains } from "./data";
+import {
+  SiCisco,
+  SiCloudflare,
+  SiDocker,
+  SiGrafana,
+  SiGithub,
+  SiLinux,
+  SiLua,
+  SiPrometheus,
+  SiProxmox,
+  SiPython,
+} from "react-icons/si";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { GitHubCalendar } from "react-github-calendar";
+import { InteractiveProjectFolder } from "./components/InteractiveProjectFolder";
+import { OrbitingTechnologyGlobe } from "./components/OrbitingTechnologyGlobe";
+import {
+  experiences,
+  navItems,
+  personalProjects,
+  qualities,
+  skillGroups,
+  studyProjects,
+} from "./data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const reduce = useReducedMotion();
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y: 28 }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.75, delay, ease }}
+      transition={{ duration: 0.7, delay, ease }}
     >
       {children}
     </motion.div>
   );
 }
 
-function SectionHeading({ index, eyebrow, title, copy }: { index: string; eyebrow: string; title: string; copy?: string }) {
+function SectionTitle({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy?: string;
+}) {
   return (
-    <Reveal className="section-heading">
-      <div className="section-index">{index}</div>
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
+    <Reveal className="section-title">
+      <p className="eyebrow">{eyebrow}</p>
+      <div className="section-title-row">
         <h2>{title}</h2>
-        {copy && <p className="section-copy">{copy}</p>}
+        {copy && <p>{copy}</p>}
       </div>
     </Reveal>
   );
 }
 
-function NetworkField() {
-  const reduce = useReducedMotion();
-  const points = [
-    [82, 104], [220, 62], [365, 148], [510, 74], [668, 182], [820, 108], [980, 198], [1120, 82], [1248, 146],
-  ];
-  const links = [[0,1],[1,2],[2,3],[2,4],[3,5],[4,5],[4,6],[5,7],[6,8],[7,8]];
-  return (
-    <div className="network-field" aria-hidden="true">
-      <svg viewBox="0 0 1330 260" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="signal" x1="0" x2="1">
-            <stop offset="0" stopColor="#5cc8ff" stopOpacity="0.08" />
-            <stop offset="0.5" stopColor="#5cc8ff" stopOpacity="0.7" />
-            <stop offset="1" stopColor="#5cc8ff" stopOpacity="0.08" />
-          </linearGradient>
-        </defs>
-        {links.map(([a,b], i) => (
-          <motion.line key={i} x1={points[a][0]} y1={points[a][1]} x2={points[b][0]} y2={points[b][1]} stroke="url(#signal)" strokeWidth="1"
-            initial={reduce ? false : { pathLength: 0, opacity: 0 }} animate={reduce ? undefined : { pathLength: 1, opacity: 1 }} transition={{ delay: .3 + i * .06, duration: 1.2, ease }} />
-        ))}
-        {points.map(([x,y], i) => (
-          <g key={i}>
-            <motion.circle cx={x} cy={y} r="9" fill="#070b10" stroke="#5cc8ff" strokeOpacity=".32" initial={reduce ? false : { scale: 0 }} animate={reduce ? undefined : { scale: 1 }} transition={{ delay: .55 + i * .07, ease }} />
-            <motion.circle cx={x} cy={y} r="2.4" fill="#8dddff" animate={reduce ? undefined : { opacity: [.3, 1, .3] }} transition={{ duration: 2.2 + i * .12, repeat: Infinity }} />
-          </g>
-        ))}
-        {!reduce && <motion.circle r="3.5" fill="#ffb35c" filter="drop-shadow(0 0 7px #ffb35c)" animate={{ cx: [82,220,365,668,820,1120,1248], cy: [104,62,148,182,108,82,146] }} transition={{ duration: 7, repeat: Infinity, ease: "linear" }} />}
-      </svg>
-    </div>
-  );
-}
-
 function Navigation() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <a className="skip-link" href="#main">Aller au contenu</a>
+      <a className="skip-link" href="#main">
+        Aller au contenu
+      </a>
       <header className="site-header">
-        <a href="#accueil" className="brand" aria-label="Retour à l’accueil"><span className="brand-mark">D</span><span>DroGone</span></a>
+        <a href="#accueil" className="brand" aria-label="Retour à l’accueil">
+          <span>R</span>
+          <strong>Robin / DroGone</strong>
+        </a>
         <nav className="desktop-nav" aria-label="Navigation principale">
-          {navItems.map(([id,label]) => <a key={id} href={`#${id}`}>{label}</a>)}
+          {navItems.map(([id, label]) => (
+            <a href={`#${id}`} key={id}>
+              {label}
+            </a>
+          ))}
         </nav>
-        <a className="availability" href="#contact"><span></span> Disponible dès maintenant</a>
-        <button className="menu-button" onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={open}>{open ? <X/> : <Menu/>}</button>
+        <a className="header-contact" href="mailto:drogoneia@gmail.com">
+          Écrire <ArrowUpRight size={15} />
+        </a>
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((value) => !value)}
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
       </header>
-      {open && (
-        <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} aria-label="Navigation mobile">
-          {navItems.map(([id,label]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{label}<ArrowUpRight size={17}/></a>)}
+      {menuOpen && (
+        <motion.nav
+          className="mobile-nav"
+          aria-label="Navigation mobile"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {navItems.map(([id, label]) => (
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+              {label} <ArrowUpRight size={17} />
+            </a>
+          ))}
         </motion.nav>
       )}
     </>
@@ -108,131 +137,336 @@ function Navigation() {
 }
 
 function Hero() {
-  const reduce = useReducedMotion();
+  const reduceMotion = useReducedMotion();
+
   return (
     <section id="accueil" className="hero">
-      <NetworkField />
       <div className="hero-grid">
-        <motion.div className="hero-copy" initial={reduce ? false : { opacity: 0 }} animate={reduce ? undefined : { opacity: 1 }} transition={{ duration: .8 }}>
-          <div className="hero-kicker"><span>RTR-03</span><span>Béziers · France</span><span>Signal stable</span></div>
-          <h1><span>Robin</span><span className="hero-alias">/ DroGone</span></h1>
-          <p className="hero-role">Étudiant en <strong>Réseaux & Télécommunications</strong></p>
-          <p className="hero-lead">Je développe des infrastructures réseau, des services Linux et des projets autour de la virtualisation, du cloud et de l’automatisation.</p>
+        <motion.div
+          className="hero-copy"
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease }}
+        >
+          <div className="hero-status">
+            <span className="status-dot" />
+            Disponible dès maintenant pour une alternance
+          </div>
+          <p className="hero-intro">Étudiant en BUT Réseaux & Télécommunications</p>
+          <h1>
+            Je construis.
+            <span>J’observe. Je résous.</span>
+          </h1>
+          <p className="hero-lead">
+            Réseaux, systèmes Linux, virtualisation et développement&nbsp;: j’aime passer d’un besoin à un environnement qui fonctionne réellement.
+          </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#projets">Voir mes projets <ArrowDown size={17}/></a>
-            <a className="button button-secondary" href="mailto:drogoneia@gmail.com?subject=Demande%20de%20CV">CV sur demande <Download size={17}/></a>
+            <a className="action action-dark" href="#projets">
+              Voir les projets <ArrowDownRight size={17} />
+            </a>
+            <a className="action action-light" href="mailto:drogoneia@gmail.com?subject=Demande%20de%20CV">
+              Demander mon CV <Download size={16} />
+            </a>
           </div>
         </motion.div>
-        <motion.aside className="hero-console" initial={reduce ? false : { opacity: 0, x: 34 }} animate={reduce ? undefined : { opacity: 1, x: 0 }} transition={{ duration: .9, delay: .25, ease }}>
-          <div className="console-top"><span>profile.status</span><span className="console-lights"><i></i><i></i><i></i></span></div>
-          <div className="console-body">
-            <div className="identity-orbit"><div className="orbit orbit-a"></div><div className="orbit orbit-b"></div><div className="core"><Network size={32}/><span>RT</span></div><i className="satellite one"></i><i className="satellite two"></i></div>
-            <dl className="console-data">
-              <div><dt>Formation</dt><dd>BUT R&T · 3e année</dd></div>
-              <div><dt>Orientation</dt><dd>Réseau · Cloud · Cyber · Dev</dd></div>
-              <div><dt>Objectif</dt><dd>Alternance</dd></div>
-              <div><dt>Mobilité</dt><dd>Béziers · Montpellier · Narbonne · Toulouse</dd></div>
-            </dl>
+
+        <motion.aside
+          className="hero-card glass-panel"
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.96, rotate: 1.5 }}
+          animate={reduceMotion ? undefined : { opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 0.9, delay: 0.16, ease }}
+        >
+          <div className="hero-card-top">
+            <span>Robin</span>
+            <span>DroGone</span>
           </div>
-          <div className="console-footer"><span><Radio size={13}/> En recherche active</span><span>uptime 03Y</span></div>
+          <div className="hero-card-monogram">R<span>/D</span></div>
+          <div className="hero-card-bottom">
+            <div>
+              <small>Formation</small>
+              <strong>BUT R&T · 3e année</strong>
+            </div>
+            <div>
+              <small>Mobilité</small>
+              <strong>Béziers · Montpellier · Toulouse</strong>
+            </div>
+          </div>
         </motion.aside>
       </div>
-      <div className="tech-marquee" aria-label="Technologies principales"><div>{[...primaryTechnologies, ...primaryTechnologies].map((tech,i) => <span key={`${tech}-${i}`}><i></i>{tech}</span>)}</div></div>
-    </section>
-  );
-}
-
-function Profile() {
-  const facts = [
-    { value: "150", label: "postes concernés", sub: "Migration Windows 11" },
-    { value: "4", label: "systèmes autonomes", sub: "Infrastructure BGP" },
-    { value: "1", label: "homelab Proxmox", sub: "En évolution continue" },
-  ];
-  return (
-    <section id="profil" className="section profile-section">
-      <SectionHeading index="01" eyebrow="Profil" title="Du réseau jusqu’au service." copy="Mon fil conducteur : comprendre l’infrastructure, la construire, l’observer et résoudre ce qui ne fonctionne pas." />
-      <div className="profile-layout">
-        <Reveal className="profile-manifesto">
-          <p>Étudiant en troisième année de BUT Réseaux & Télécommunications à l’IUT de Béziers, je travaille sur des projets d’administration système, de virtualisation, de cloud et de développement.</p>
-          <p>J’apprends surtout par la pratique : créer une topologie, déployer un service, mesurer son état puis documenter les choix techniques.</p>
-          <div className="profile-objective"><ShieldCheck/><div><span>Objectif 2026</span><strong>Une alternance en réseau, développement, cloud ou administration informatique.</strong></div></div>
-        </Reveal>
-        <div className="stat-stack">{facts.map((fact,i)=><Reveal key={fact.label} className="stat-card" delay={i*.08}><span className="stat-value">{fact.value}</span><div><strong>{fact.label}</strong><small>{fact.sub}</small></div><span className="stat-pulse"></span></Reveal>)}</div>
+      <div className="hero-footnote">
+        <span>Réseaux</span><span>Systèmes</span><span>Cloud</span><span>Développement</span><span>Nouvelles technologies</span>
       </div>
     </section>
   );
 }
+
+function Qualities() {
+  return (
+    <section id="profil" className="quality-section section-shell">
+      <SectionTitle
+        eyebrow="Ma manière de travailler"
+        title="Des qualités qui se voient dans les projets."
+        copy="Pas une liste de mots-clés : quatre habitudes qui guident ma façon d’apprendre et de résoudre un problème."
+      />
+      <div className="quality-grid">
+        {qualities.map((quality, index) => (
+          <Reveal className="quality-card" key={quality.label} delay={index * 0.06}>
+            <span>0{index + 1}</span>
+            <h3>{quality.label}</h3>
+            <p>{quality.proof}</p>
+            <ArrowUpRight aria-hidden="true" />
+          </Reveal>
+        ))}
+      </div>
+      <Reveal className="about-strip">
+        <div>
+          <p className="eyebrow">À propos</p>
+          <h3>Comprendre ce qui se passe, puis construire une solution propre.</h3>
+        </div>
+        <p>
+          En troisième année de BUT R&T à l’IUT de Béziers, je travaille autant sur la configuration d’infrastructures que sur le déploiement de services et le développement d’outils. Je recherche une alternance en réseau, développement, cloud ou administration informatique.
+        </p>
+      </Reveal>
+    </section>
+  );
+}
+
+const orbitIcons = [
+  { label: "Linux", Icon: SiLinux },
+  { label: "Cisco", Icon: SiCisco },
+  { label: "Proxmox", Icon: SiProxmox },
+  { label: "Docker", Icon: SiDocker },
+  { label: "Python", Icon: SiPython },
+  { label: "Grafana", Icon: SiGrafana },
+  { label: "Prometheus", Icon: SiPrometheus },
+  { label: "Cloudflare", Icon: SiCloudflare },
+  { label: "Lua", Icon: SiLua },
+];
 
 function Skills() {
-  const [active, setActive] = useState(skillDomains[0].id);
-  const selected = skillDomains.find((item) => item.id === active)!;
+  const [activeSkill, setActiveSkill] = useState(skillGroups[0].id);
+  const selectedSkill = skillGroups.find((skill) => skill.id === activeSkill) ?? skillGroups[0];
+
   return (
-    <section id="competences" className="section skills-section">
-      <SectionHeading index="02" eyebrow="Domaines de compétences" title="Une topologie, cinq zones de pratique." copy="Sélectionnez un nœud pour explorer les compétences et technologies associées." />
-      <div className="skills-system">
-        <div className="skill-nodes" role="tablist" aria-label="Domaines de compétences">
-          {skillDomains.map((domain,i)=><button key={domain.id} role="tab" aria-selected={active===domain.id} onClick={()=>setActive(domain.id)} className={active===domain.id ? "skill-node active" : "skill-node"}><span>{domain.code}</span><strong>{domain.label}</strong><i>{String(i+1).padStart(2,"0")}</i></button>)}
+    <section id="competences" className="skills-section">
+      <div className="section-shell">
+        <SectionTitle
+          eyebrow="Compétences"
+          title="Ce que je sais mettre en œuvre."
+          copy="Les outils comptent, mais surtout ce qu’ils me permettent de configurer, déployer ou diagnostiquer."
+        />
+        <div className="skills-layout">
+          <div className="skills-copy">
+            <div className="skill-tabs" role="tablist" aria-label="Domaines de compétences">
+              {skillGroups.map((skill) => (
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeSkill === skill.id}
+                  className={activeSkill === skill.id ? "skill-tab active" : "skill-tab"}
+                  key={skill.id}
+                  onClick={() => setActiveSkill(skill.id)}
+                >
+                  {skill.shortLabel}
+                </button>
+              ))}
+            </div>
+            <motion.div
+              key={selectedSkill.id}
+              className="skill-detail"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <p className="eyebrow">{selectedSkill.label}</p>
+              <h3>{selectedSkill.summary}</h3>
+              <div className="skill-actions">
+                {selectedSkill.actions.map((action) => (
+                  <span key={action}><Check size={14} />{action}</span>
+                ))}
+              </div>
+              <div className="technology-list">
+                {selectedSkill.technologies.map((technology) => <span key={technology}>{technology}</span>)}
+              </div>
+            </motion.div>
+          </div>
+          <Reveal className="orbit-frame">
+            <OrbitingTechnologyGlobe technologies={orbitIcons} />
+            <div className="orbit-caption">
+              <span>Écosystème technique</span>
+              <span>Composant interactif · 21st.dev</span>
+            </div>
+          </Reveal>
         </div>
-        <motion.div className="skill-panel" key={selected.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35, ease }}>
-          <div className="skill-panel-head"><span>{selected.code}</span><div className="signal-bars"><i></i><i></i><i></i><i></i></div></div>
-          <h3>{selected.label}</h3><p>{selected.summary}</p>
-          <div className="capability-grid">{selected.capabilities.map(item=><span key={item}><Check size={14}/>{item}</span>)}</div>
-          <div className="technology-cloud">{selected.technologies.map(item=><span key={item}>{item}</span>)}</div>
-        </motion.div>
       </div>
     </section>
+  );
+}
+
+function PersonalProjects() {
+  return (
+    <div className="personal-projects">
+      <div className="project-copy">
+        <p className="eyebrow">Projets personnels</p>
+        <h3>Les environnements que je construis en dehors des cours.</h3>
+        <p>Deux projets suivis dans le temps, utilisés pour expérimenter, développer et apprendre avec de vraies contraintes.</p>
+        <div className="project-index">
+          {personalProjects.map((item, index) => (
+            <span key={item.title}><i>0{index + 1}</i>{item.title}</span>
+          ))}
+        </div>
+      </div>
+      <InteractiveProjectFolder projects={personalProjects} />
+    </div>
+  );
+}
+
+function StudyProjects() {
+  return (
+    <div className="study-projects">
+      <div className="subsection-heading">
+        <div>
+          <p className="eyebrow">Projets d’études</p>
+          <h3>Des sujets techniques, résumés à l’essentiel.</h3>
+        </div>
+        <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer">
+          Voir GitHub <ArrowUpRight size={16} />
+        </a>
+      </div>
+      <div className="study-grid">
+        {studyProjects.map((project, index) => (
+          <Reveal className="study-card" key={project.title} delay={index * 0.05}>
+            <div className="study-card-top">
+              <span>{project.category}</span>
+              <span>0{index + 1}</span>
+            </div>
+            <h4>{project.title}</h4>
+            <p>{project.summary}</p>
+            <strong>{project.highlight}</strong>
+            <div className="technology-list">
+              {project.technologies.map((technology) => <span key={technology}>{technology}</span>)}
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
   );
 }
 
 function Projects() {
   return (
-    <section id="projets" className="section projects-section">
-      <SectionHeading index="03" eyebrow="Projets sélectionnés" title="Des environnements construits pour apprendre." copy="Cinq projets qui montrent le passage de la théorie à une infrastructure ou un service concret." />
-      <div className="project-list">
-        {projects.map((project,i)=><Reveal key={project.number} className="project-card" delay={i*.04}>
-          <div className="project-number">{project.number}</div>
-          <div className="project-main"><div className="project-meta"><span>{project.type}</span><span className={`status status-${project.status.toLowerCase().replace(" ","-")}`}><i></i>{project.status}</span></div><h3>{project.title}</h3><p>{project.summary}</p><div className="project-tech">{project.technologies.map(tech=><span key={tech}>{tech}</span>)}</div></div>
-          <div className="project-details"><strong>{project.result}</strong><ul>{project.details.map(item=><li key={item}>{item}</li>)}</ul></div>
-          <div className="project-route"><Route size={24}/><span></span></div>
-        </Reveal>)}
-      </div>
-      <Reveal><a className="inline-link" href="https://github.com/DroGone0" target="_blank" rel="noreferrer">Explorer mes dépôts GitHub <ArrowUpRight size={17}/></a></Reveal>
+    <section id="projets" className="projects-section section-shell">
+      <SectionTitle
+        eyebrow="Projets"
+        title="Personnel d’un côté. Études de l’autre."
+        copy="Les projets personnels montrent ce que je poursuis sur la durée ; les projets d’études donnent un aperçu des architectures mises en pratique."
+      />
+      <PersonalProjects />
+      <StudyProjects />
     </section>
   );
 }
 
-function Experience() {
+function Experiences() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const rotateX = useTransform(scrollYProgress, [0, 0.45, 1], [8, 0, -5]);
+  const scale = useTransform(scrollYProgress, [0, 0.45, 1], [0.94, 1, 0.97]);
+
   return (
-    <section id="experience" className="section experience-section">
-      <SectionHeading index="04" eyebrow="Expérience" title="Une migration à l’échelle réelle." />
-      <div className="experience-grid">
-        <Reveal className="experience-identity"><div className="experience-icon"><BriefcaseBusiness/></div><p className="eyebrow">Stage · Hemeria</p><h3>Technicien informatique stagiaire</h3><p>Participation à la migration du parc Windows 10 vers Windows 11, de la préparation jusqu’à l’assistance utilisateur.</p><div className="experience-tools">{["Lansweeper","PC Health Check","Rufus","Windows 11","Outlook","Exchange"].map(x=><span key={x}>{x}</span>)}</div></Reveal>
-        <Reveal className="experience-meter"><div className="meter-value"><strong>≈150</strong><span>postes concernés</span></div><div className="meter-track"><motion.div initial={{width:0}} whileInView={{width:"92%"}} viewport={{once:true}} transition={{duration:1.4,ease}} /></div><div className="meter-labels"><span>Audit</span><span>Migration</span><span>Validation</span></div></Reveal>
-        <Reveal className="mission-list"><h3>Interventions réalisées</h3>{["Compatibilité matérielle, TPM et Secure Boot","Création des supports et installation Windows 11","Contrôles après migration et assistance utilisateurs","Diagnostic Outlook, Exchange, DNS et HTTPS","Documentation des incidents et solutions"].map((item,i)=><div key={item}><span>{String(i+1).padStart(2,"0")}</span><p>{item}</p></div>)}</Reveal>
+    <section id="experience" className="experience-section" ref={sectionRef}>
+      <div className="section-shell">
+        <SectionTitle
+          eyebrow="Expériences"
+          title="Deux contextes. Deux manières de livrer."
+          copy="Du développement d’un prototype à une migration informatique à grande échelle."
+        />
+        <motion.div className="experience-window" style={{ rotateX, scale }}>
+          <div className="window-bar">
+            <span><i /><i /><i /></span>
+            <span>Expériences terrain</span>
+            <span>02 missions</span>
+          </div>
+          <div className="experience-grid">
+            {experiences.map((experience, index) => (
+              <article className={index === 0 ? "experience-card inverse" : "experience-card"} key={experience.company}>
+                <div className="experience-card-top">
+                  <span>0{index + 1}</span>
+                  <BriefcaseBusiness size={18} />
+                </div>
+                <p className="eyebrow">Stage · {experience.company}</p>
+                <h3>{experience.role}</h3>
+                <p>{experience.summary}</p>
+                <strong>{experience.highlight}</strong>
+                <ul>
+                  {experience.missions.map((mission) => <li key={mission}>{mission}</li>)}
+                </ul>
+                <div className="technology-list">
+                  {experience.technologies.map((technology) => <span key={technology}>{technology}</span>)}
+                </div>
+              </article>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-function Journey() {
+function JourneyAndActivity() {
   return (
-    <section id="parcours" className="section journey-section">
-      <SectionHeading index="05" eyebrow="Parcours" title="Un profil réseau enrichi par le développement." />
-      <div className="journey-line">
-        <Reveal className="journey-item active"><span className="journey-year">Aujourd’hui</span><div className="journey-node"><GraduationCap/></div><div><p className="eyebrow">Formation principale</p><h3>BUT Réseaux & Télécommunications</h3><p>IUT de Béziers · Troisième année</p><div className="journey-tags"><span>Réseaux</span><span>Systèmes</span><span>Cloud</span><span>Cybersécurité</span><span>Supervision</span><span>Automatisation</span></div></div></Reveal>
-        <Reveal className="journey-item"><span className="journey-year">Fondations</span><div className="journey-node"><Code2/></div><div><p className="eyebrow">Parcours complémentaire</p><h3>BUT Informatique</h3><p>Bases en programmation, algorithmique, développement d’applications et bases de données.</p></div></Reveal>
+    <section className="journey-section section-shell">
+      <div className="journey-grid">
+        <Reveal className="journey-card">
+          <p className="eyebrow">Parcours</p>
+          <div className="journey-item current">
+            <GraduationCap />
+            <div>
+              <span>Aujourd’hui</span>
+              <h3>BUT Réseaux & Télécommunications</h3>
+              <p>IUT de Béziers · Troisième année</p>
+            </div>
+          </div>
+          <div className="journey-item">
+            <Code2 />
+            <div>
+              <span>Fondations</span>
+              <h3>BUT Informatique</h3>
+              <p>Programmation, algorithmique, applications et bases de données.</p>
+            </div>
+          </div>
+        </Reveal>
+        <Reveal className="activity-card" delay={0.08}>
+          <div className="activity-heading">
+            <div>
+              <p className="eyebrow">Activité GitHub</p>
+              <h3>Construire régulièrement.</h3>
+            </div>
+            <SiGithub />
+          </div>
+          <div className="github-calendar" aria-label="Calendrier réel des contributions GitHub de DroGone0">
+            <GitHubCalendar
+              username="DroGone0"
+              colorScheme="dark"
+              blockMargin={4}
+              blockRadius={2}
+              blockSize={10}
+              fontSize={11}
+              showWeekdayLabels
+              theme={{ dark: ["#292927", "#5966a3", "#6977c7", "#8292ed", "#a8b4ff"] }}
+              labels={{
+                months: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"],
+                weekdays: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+                totalCount: "{{count}} contributions sur les 12 derniers mois",
+                legend: { less: "Moins", more: "Plus" },
+              }}
+              errorMessage="Le calendrier GitHub est momentanément indisponible."
+            />
+          </div>
+          <p>Données publiques chargées automatiquement depuis le profil <strong>DroGone0</strong>.</p>
+          <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer">Ouvrir le profil <ArrowUpRight size={15} /></a>
+        </Reveal>
       </div>
-      <Reveal className="qualities"><p className="eyebrow">Méthode de travail</p>{["Curieux","Autonome","Rigoureux","Polyvalent","Persévérant","Esprit d’équipe"].map((q,i)=><span key={q}><i>{i+1}</i>{q}</span>)}</Reveal>
-    </section>
-  );
-}
-
-function Personal() {
-  const interests = [{icon:Server,label:"Auto-hébergement"},{icon:Cpu,label:"IA & technologies"},{icon:TerminalSquare,label:"Open source"},{icon:Sparkles,label:"Jeu vidéo & esport"},{icon:Cloud,label:"Voyages"}];
-  return (
-    <section className="section personal-section">
-      <SectionHeading index="06" eyebrow="En dehors de l’informatique… ou presque" title="Toujours un projet à tester." />
-      <div className="personal-grid"><Reveal className="personal-copy"><p>Je développe aussi des projets personnels autour des serveurs, de l’intelligence artificielle et du jeu vidéo. J’aime découvrir de nouveaux outils, expérimenter et suivre l’évolution des technologies.</p><p className="personal-quote">« Comprendre en construisant. »</p></Reveal><div className="interest-grid">{interests.map(({icon:Icon,label},i)=><Reveal key={label} className="interest-card" delay={i*.06}><Icon/><span>{label}</span><i>0{i+1}</i></Reveal>)}</div></div>
     </section>
   );
 }
@@ -240,21 +474,51 @@ function Personal() {
 function Contact() {
   return (
     <section id="contact" className="contact-section">
-      <NetworkField />
-      <Reveal className="contact-inner"><p className="eyebrow">Connexion ouverte</p><h2>Un projet, une alternance<br/>ou une question&nbsp;?</h2><p>Je suis disponible dès maintenant sur Béziers, Montpellier, Narbonne et Toulouse.</p><div className="contact-actions"><a className="button button-primary" href="mailto:drogoneia@gmail.com">Écrire un e-mail <Mail size={17}/></a><a className="button button-secondary" href="https://www.linkedin.com/in/robin-britelle/" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17}/></a></div><div className="contact-channels"><a href="mailto:drogoneia@gmail.com"><Mail/>drogoneia@gmail.com</a><span><Radio/>Discord · drogone_</span><a href="https://github.com/DroGone0" target="_blank" rel="noreferrer"><Code2/>github.com/DroGone0</a></div></Reveal>
+      <div className="contact-inner">
+        <Reveal>
+          <p className="eyebrow">Contact</p>
+          <h2>Une alternance, un projet ou simplement une question&nbsp;?</h2>
+          <p>Je suis disponible dès maintenant et mobile autour de Béziers, Montpellier, Narbonne et Toulouse.</p>
+          <div className="contact-actions">
+            <a href="mailto:drogoneia@gmail.com" className="action action-white"><Mail size={17} />drogoneia@gmail.com</a>
+            <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer" className="action action-outline"><SiGithub size={17} />GitHub</a>
+          </div>
+          <div className="contact-meta">
+            <span><CircleDot size={14} />Discord · drogone_</span>
+            <span><Sparkles size={14} />Alternance · disponible maintenant</span>
+          </div>
+        </Reveal>
+      </div>
+      <div className="contact-marquee" aria-hidden="true">
+        <span>Réseau · Linux · Virtualisation · Développement · Cloud · Automatisation · </span>
+        <span>Réseau · Linux · Virtualisation · Développement · Cloud · Automatisation · </span>
+      </div>
     </section>
   );
 }
 
 export function App() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 24, restDelta: .001 });
+  const progress = useSpring(scrollYProgress, { stiffness: 130, damping: 28, restDelta: 0.001 });
+
   return (
     <>
-      <motion.div className="scroll-progress" style={{ scaleX }} />
+      <motion.div className="scroll-progress" style={{ scaleX: progress }} />
       <Navigation />
-      <main id="main"><Hero/><Profile/><Skills/><Projects/><Experience/><Journey/><Personal/><Contact/></main>
-      <footer><span>© 2026 DroGone</span><span>Conçu comme une infrastructure vivante.</span><a href="#accueil">Retour en haut <ArrowUpRight size={14}/></a></footer>
+      <main id="main">
+        <Hero />
+        <Qualities />
+        <Skills />
+        <Projects />
+        <Experiences />
+        <JourneyAndActivity />
+        <Contact />
+      </main>
+      <footer>
+        <span>© 2026 Robin / DroGone</span>
+        <span>Portfolio personnel</span>
+        <a href="#accueil">Retour en haut <ArrowRight size={14} /></a>
+      </footer>
     </>
   );
 }

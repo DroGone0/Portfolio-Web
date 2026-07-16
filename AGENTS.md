@@ -20,7 +20,8 @@
 - Never add secrets or personal data beyond content explicitly provided by the owner.
 
 ## Visual direction
-- Technical editorial style inspired by network topology and observability.
-- Graphite surfaces, electric blue signal color, warm amber status accents.
-- Motion must explain structure, progress, traffic, or state.
-- Avoid generic glassmorphism, decorative gradients without hierarchy, and effect overload.
+- Premium monochrome editorial portfolio: warm white, near-black and restrained translucent surfaces.
+- Lead with identity, availability and concrete working qualities before technical detail.
+- Motion must reveal hierarchy or reward interaction; no terminal, network-console or cyber-dashboard styling.
+- Prefer short copy, generous spacing and compact project previews over exhaustive cards.
+- Components installed from 21st.dev must be visibly adapted to this design system and documented in `docs/design-direction.md`.

@@ -1,126 +1,167 @@
-export type SkillDomain = {
+export type Quality = {
+  label: string;
+  proof: string;
+};
+
+export type SkillGroup = {
   id: string;
   label: string;
-  code: string;
+  shortLabel: string;
   summary: string;
-  capabilities: string[];
+  actions: string[];
   technologies: string[];
 };
 
-export type Project = {
-  number: string;
+export type PortfolioProject = {
   title: string;
-  type: string;
+  category: string;
   summary: string;
-  result: string;
-  details: string[];
+  highlight: string;
   technologies: string[];
-  status: "Déployé" | "Documenté" | "En évolution";
 };
 
-export const skillDomains: SkillDomain[] = [
+export type Experience = {
+  company: string;
+  role: string;
+  summary: string;
+  highlight: string;
+  missions: string[];
+  technologies: string[];
+};
+
+export const qualities: Quality[] = [
+  {
+    label: "Curieux",
+    proof: "Je teste de nouveaux outils bien au-delà des sujets vus en cours.",
+  },
+  {
+    label: "Autonome",
+    proof: "Je construis et maintiens mon propre homelab pour apprendre par la pratique.",
+  },
+  {
+    label: "Rigoureux",
+    proof: "Je diagnostique, vérifie puis documente avant de considérer un problème résolu.",
+  },
+  {
+    label: "Persévérant",
+    proof: "Je compare plusieurs pistes jusqu’à trouver une solution fiable et compréhensible.",
+  },
+];
+
+export const skillGroups: SkillGroup[] = [
   {
     id: "network",
     label: "Réseaux",
-    code: "NET.01",
-    summary: "Concevoir, configurer et diagnostiquer des architectures réseau cohérentes.",
-    capabilities: ["Routage & commutation", "Architecture d’entreprise", "Analyse de trafic", "Services réseau"],
-    technologies: ["VLAN", "STP", "OSPF", "BGP", "MPLS", "NAT", "DNS", "DHCP"],
+    shortLabel: "Réseau",
+    summary: "Configurer, faire communiquer et diagnostiquer des infrastructures d’entreprise ou d’opérateur.",
+    actions: ["Routage et commutation", "Architecture réseau", "Services réseau", "Analyse de trafic"],
+    technologies: ["Cisco", "VLAN", "STP", "OSPF", "BGP", "MPLS", "DNS", "DHCP", "Wireshark"],
   },
   {
     id: "systems",
-    label: "Linux & systèmes",
-    code: "SYS.02",
-    summary: "Administrer des serveurs, déployer des services et diagnostiquer les incidents.",
-    capabilities: ["Administration Linux", "Gestion des accès", "Déploiement de services", "Scripts Bash"],
-    technologies: ["Debian", "Ubuntu", "Bash", "SSH", "Apache", "NFS"],
+    label: "Systèmes Linux",
+    shortLabel: "Linux",
+    summary: "Administrer des serveurs, déployer des services et intervenir lorsqu’un environnement ne répond plus comme prévu.",
+    actions: ["Administration Linux", "Gestion des accès", "Déploiement de services", "Dépannage système"],
+    technologies: ["Debian", "Ubuntu", "Bash", "SSH", "Apache", "NFS", "Windows Server"],
   },
   {
     id: "virtualization",
-    label: "Virtualisation",
-    code: "VRT.03",
+    label: "Virtualisation & cloud",
+    shortLabel: "Cloud",
     summary: "Créer des environnements isolés, reproductibles et adaptés aux ressources disponibles.",
-    capabilities: ["Machines virtuelles", "Conteneurs", "Réseaux virtuels", "Gestion des ressources"],
-    technologies: ["Proxmox", "Docker", "Compose", "LXC / LXD", "Incus", "KVM"],
+    actions: ["Machines virtuelles", "Conteneurs", "Réseaux virtuels", "Hébergement de services"],
+    technologies: ["Proxmox", "Docker", "Compose", "LXC", "LXD", "Incus", "KVM", "Cloudflare"],
   },
   {
     id: "observability",
-    label: "Supervision",
-    code: "OBS.04",
-    summary: "Collecter, visualiser et interpréter les métriques utiles à la disponibilité d’un service.",
-    capabilities: ["Collecte de métriques", "Dashboards", "Journaux centralisés", "Détection de problèmes"],
-    technologies: ["Prometheus", "Grafana", "Node Exporter", "Loki", "Promtail", "SNMP"],
+    label: "Supervision & automatisation",
+    shortLabel: "Observe",
+    summary: "Mesurer l’état d’un service, rendre les signaux lisibles et automatiser les tâches répétitives.",
+    actions: ["Collecte de métriques", "Tableaux de bord", "Centralisation des journaux", "Déploiement automatisé"],
+    technologies: ["Prometheus", "Grafana", "Loki", "SNMP", "Python", "Bash", "YAML", "PXE"],
   },
   {
     id: "development",
     label: "Développement",
-    code: "DEV.05",
-    summary: "Développer des outils, automatisations, interfaces et fonctionnalités orientées usage.",
-    capabilities: ["Python", "Automatisation", "Applications web", "Fonctionnalités serveur"],
-    technologies: ["Python", "TypeScript", "HTML / CSS", "Lua", "SQL", "Git"],
+    shortLabel: "Dev",
+    summary: "Développer des scripts, des outils et des fonctionnalités lorsque le besoin dépasse la configuration d’une infrastructure.",
+    actions: ["Scripts Python", "Applications", "Interfaces web", "Fonctionnalités de jeu"],
+    technologies: ["Python", "C#", "HTML", "CSS", "Lua", "SQL", "Git", "GitHub"],
   },
 ];
 
-export const projects: Project[] = [
+export const personalProjects: PortfolioProject[] = [
   {
-    number: "01",
     title: "Homelab Proxmox",
-    type: "Infrastructure personnelle",
-    summary: "Un environnement personnel pour héberger, isoler et expérimenter avec plusieurs services.",
-    result: "1 homelab actif",
-    details: ["Machines virtuelles et conteneurs", "Stockage et réseau virtualisés", "Accès distant sécurisé", "Services auto-hébergés et IA locale"],
+    category: "Projet personnel · Infrastructure",
+    summary: "Un serveur personnel pour héberger des machines virtuelles, des conteneurs et différents services auto-hébergés.",
+    highlight: "Un laboratoire disponible pour tester, casser et reconstruire.",
     technologies: ["Proxmox", "Linux", "Docker", "Nextcloud", "Cloudflare Tunnel"],
-    status: "En évolution",
   },
   {
-    number: "02",
-    title: "Infrastructure BGP",
-    type: "Routage inter-AS",
-    summary: "Une topologie multi-opérateurs pour observer la propagation des routes et le choix du meilleur chemin.",
-    result: "4 systèmes autonomes",
-    details: ["Sessions eBGP et iBGP", "Annonce et filtrage de réseaux", "Weight et Local Preference", "Tests et analyse Wireshark"],
-    technologies: ["BGP", "OSPF", "Cisco", "Wireshark"],
-    status: "Documenté",
-  },
-  {
-    number: "03",
-    title: "Plateforme de supervision",
-    type: "Observabilité",
-    summary: "Une chaîne de collecte et de visualisation pour suivre l’état de plusieurs serveurs.",
-    result: "Métriques centralisées",
-    details: ["CPU, RAM, stockage et réseau", "Dashboards dédiés", "Disponibilité des services", "Alertes et diagnostic"],
-    technologies: ["Prometheus", "Grafana", "Node Exporter", "Glances"],
-    status: "Déployé",
-  },
-  {
-    number: "04",
-    title: "Datacenter Leaf–Spine",
-    type: "Architecture réseau",
-    summary: "Une architecture de datacenter conteneurisée qui réunit routage, services et télémétrie.",
-    result: "Topologie reproductible",
-    details: ["Fabric Leaf–Spine", "Redondance et routage", "DNS et stockage", "Notions VXLAN et MP-BGP mises en pratique"],
-    technologies: ["Containerlab", "BGP", "VXLAN", "Linux", "Grafana"],
-    status: "En évolution",
-  },
-  {
-    number: "05",
     title: "Serveur FiveM",
-    type: "Développement de jeu",
-    summary: "Développement et administration d’un serveur multijoueur avec des fonctionnalités personnalisées.",
-    result: "Produit communautaire",
-    details: ["Scripts et fonctionnalités", "Gestion SQL", "Performance serveur", "Collaboration et communauté"],
+    category: "Projet personnel · Développement",
+    summary: "Développement et administration d’un serveur multijoueur avec des fonctionnalités personnalisées et une communauté à gérer.",
+    highlight: "Code, performance serveur, base de données et travail en équipe.",
     technologies: ["FiveM", "QBCore", "Lua", "SQL", "Git"],
-    status: "En évolution",
   },
 ];
 
-export const primaryTechnologies = ["Linux", "Cisco", "Proxmox", "Docker", "Python", "GitHub", "Prometheus", "Grafana", "Wireshark", "Containerlab", "Cloudflare", "Windows Server"];
+export const studyProjects: PortfolioProject[] = [
+  {
+    title: "Infrastructure BGP",
+    category: "Routage",
+    summary: "Quatre systèmes autonomes, des sessions eBGP/iBGP et l’analyse de la sélection des routes.",
+    highlight: "4 systèmes autonomes",
+    technologies: ["BGP", "OSPF", "Cisco", "Wireshark"],
+  },
+  {
+    title: "Plateforme de supervision",
+    category: "Observabilité",
+    summary: "Collecte et visualisation des métriques CPU, mémoire, stockage, réseau et disponibilité des services.",
+    highlight: "Métriques centralisées",
+    technologies: ["Prometheus", "Grafana", "Node Exporter", "Glances"],
+  },
+  {
+    title: "Datacenter Leaf–Spine",
+    category: "Architecture",
+    summary: "Une topologie de datacenter reproductible réunissant routage, services et télémétrie réseau.",
+    highlight: "Notions VXLAN et MP-BGP mises en pratique",
+    technologies: ["Containerlab", "BGP", "VXLAN", "Linux", "Grafana"],
+  },
+  {
+    title: "Déploiement & automatisation",
+    category: "Systèmes",
+    summary: "Préparation d’environnements et déploiement de services à l’aide de scripts et de fichiers de configuration.",
+    highlight: "Des opérations rendues reproductibles",
+    technologies: ["Python", "Bash", "YAML", "PXE", "Git"],
+  },
+];
+
+export const experiences: Experience[] = [
+  {
+    company: "Thales",
+    role: "Développement C#",
+    summary: "Développement d’un prototype de lunette de visée et de son interface graphique.",
+    highlight: "Du besoin fonctionnel à un prototype manipulable",
+    missions: ["Développement en C#", "Conception de l’interface graphique", "Itérations sur le comportement du prototype"],
+    technologies: ["C#", "Interface graphique", "Prototypage"],
+  },
+  {
+    company: "Hemeria",
+    role: "Technicien informatique stagiaire",
+    summary: "Participation à la migration du parc Windows 10 vers Windows 11 et assistance aux utilisateurs.",
+    highlight: "Environ 150 postes concernés",
+    missions: ["Compatibilité matérielle, TPM et Secure Boot", "Installation et vérifications après migration", "Diagnostic Outlook, Exchange, DNS et HTTPS"],
+    technologies: ["Windows 11", "Lansweeper", "Rufus", "Outlook", "Exchange"],
+  },
+];
 
 export const navItems = [
   ["profil", "Profil"],
   ["competences", "Compétences"],
   ["projets", "Projets"],
-  ["experience", "Expérience"],
-  ["parcours", "Parcours"],
+  ["experience", "Expériences"],
   ["contact", "Contact"],
 ] as const;
