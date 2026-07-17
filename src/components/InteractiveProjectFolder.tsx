@@ -76,8 +76,7 @@ export function InteractiveProjectFolder({ projects }: InteractiveProjectFolderP
           aria-expanded={open}
         >
           <span className="folder-sheen" />
-          <span className="folder-title">projets_perso</span>
-          <span className="folder-hint">{open ? "Cliquer pour refermer" : "Cliquer pour explorer"}</span>
+          <span className="folder-title">Projets perso</span>
         </motion.button>
       </div>
 
@@ -89,7 +88,6 @@ export function InteractiveProjectFolder({ projects }: InteractiveProjectFolderP
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
           >
-            <span>Sélectionnez une fiche · glissez-la vers le bas pour fermer</span>
             <button type="button" onClick={() => setOpen(false)} aria-label="Fermer les projets"><X /></button>
           </motion.div>
         )}

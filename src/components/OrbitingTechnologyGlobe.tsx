@@ -33,7 +33,7 @@ export function OrbitingTechnologyGlobe({ technologies }: OrbitingTechnologyGlob
             }),
           )}
         </svg>
-        <div className="globe-label"><span>R&T</span><small>écosystème</small></div>
+        <div className="globe-label"><span>R&T</span></div>
       </div>
 
       {rings.map((icons, ringIndex) => (

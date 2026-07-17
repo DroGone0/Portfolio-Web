@@ -4,7 +4,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   BriefcaseBusiness,
-  Check,
   CircleDot,
   Code2,
   Download,
@@ -28,6 +27,7 @@ import {
 } from "react-icons/si";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { GitHubCalendar } from "react-github-calendar";
+import { DataGridHero } from "./components/DataGridHero";
 import { InteractiveProjectFolder } from "./components/InteractiveProjectFolder";
 import { OrbitingTechnologyGlobe } from "./components/OrbitingTechnologyGlobe";
 import {
@@ -150,15 +150,15 @@ function Hero() {
         >
           <div className="hero-status">
             <span className="status-dot" />
-            Disponible dès maintenant pour une alternance
+            Alternance · disponible maintenant
           </div>
-          <p className="hero-intro">Étudiant en BUT Réseaux & Télécommunications</p>
+          <p className="hero-intro">BUT Réseaux & Télécommunications · IUT Béziers</p>
           <h1>
-            Je construis.
-            <span>J’observe. Je résous.</span>
+            Réseaux.
+            <span>Systèmes. Projets.</span>
           </h1>
           <p className="hero-lead">
-            Réseaux, systèmes Linux, virtualisation et développement&nbsp;: j’aime passer d’un besoin à un environnement qui fonctionne réellement.
+            Linux · virtualisation · cloud · développement
           </p>
           <div className="hero-actions">
             <a className="action action-dark" href="#projets">
@@ -176,21 +176,35 @@ function Hero() {
           animate={reduceMotion ? undefined : { opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.9, delay: 0.16, ease }}
         >
-          <div className="hero-card-top">
-            <span>Robin</span>
-            <span>DroGone</span>
-          </div>
-          <div className="hero-card-monogram">R<span>/D</span></div>
-          <div className="hero-card-bottom">
-            <div>
-              <small>Formation</small>
-              <strong>BUT R&T · 3e année</strong>
+          <DataGridHero
+            rows={18}
+            cols={14}
+            spacing={4}
+            duration={6.2}
+            color="rgba(17, 17, 16, 0.68)"
+            animationType="wave"
+            pulseEffect
+            mouseGlow
+            opacityMin={0.035}
+            opacityMax={0.3}
+            className="hero-data-grid"
+          >
+            <div className="hero-card-top">
+              <span>Profil</span>
+              <span className="hero-card-live"><i />en ligne</span>
             </div>
-            <div>
-              <small>Mobilité</small>
-              <strong>Béziers · Montpellier · Toulouse</strong>
+            <div className="hero-card-monogram"><span>R</span><em>/D</em></div>
+            <div className="hero-card-bottom">
+              <div>
+                <small>Formation</small>
+                <strong>BUT R&T · année 3</strong>
+              </div>
+              <div>
+                <small>Mobilité</small>
+                <strong>Béziers · Montpellier · Toulouse</strong>
+              </div>
             </div>
-          </div>
+          </DataGridHero>
         </motion.aside>
       </div>
       <div className="hero-footnote">
@@ -205,8 +219,7 @@ function Qualities() {
     <section id="profil" className="quality-section section-shell">
       <SectionTitle
         eyebrow="Ma manière de travailler"
-        title="Des qualités qui se voient dans les projets."
-        copy="Pas une liste de mots-clés : quatre habitudes qui guident ma façon d’apprendre et de résoudre un problème."
+        title="Ce qui me fait avancer."
       />
       <div className="quality-grid">
         {qualities.map((quality, index) => (
@@ -221,10 +234,10 @@ function Qualities() {
       <Reveal className="about-strip">
         <div>
           <p className="eyebrow">À propos</p>
-          <h3>Comprendre ce qui se passe, puis construire une solution propre.</h3>
+          <h3>BUT R&T · IUT de Béziers</h3>
         </div>
         <p>
-          En troisième année de BUT R&T à l’IUT de Béziers, je travaille autant sur la configuration d’infrastructures que sur le déploiement de services et le développement d’outils. Je recherche une alternance en réseau, développement, cloud ou administration informatique.
+          Année 3 · réseaux, systèmes, cloud et développement. Alternance recherchée à Béziers, Montpellier, Narbonne ou Toulouse.
         </p>
       </Reveal>
     </section>
@@ -252,8 +265,7 @@ function Skills() {
       <div className="section-shell">
         <SectionTitle
           eyebrow="Compétences"
-          title="Ce que je sais mettre en œuvre."
-          copy="Les outils comptent, mais surtout ce qu’ils me permettent de configurer, déployer ou diagnostiquer."
+          title="Domaines. Outils. Pratique."
         />
         <div className="skills-layout">
           <div className="skills-copy">
@@ -281,8 +293,8 @@ function Skills() {
               <p className="eyebrow">{selectedSkill.label}</p>
               <h3>{selectedSkill.summary}</h3>
               <div className="skill-actions">
-                {selectedSkill.actions.map((action) => (
-                  <span key={action}><Check size={14} />{action}</span>
+                {selectedSkill.actions.map((action, index) => (
+                  <span key={action}><i>0{index + 1}</i>{action}</span>
                 ))}
               </div>
               <div className="technology-list">
@@ -292,10 +304,6 @@ function Skills() {
           </div>
           <Reveal className="orbit-frame">
             <OrbitingTechnologyGlobe technologies={orbitIcons} />
-            <div className="orbit-caption">
-              <span>Écosystème technique</span>
-              <span>Composant interactif · 21st.dev</span>
-            </div>
           </Reveal>
         </div>
       </div>
@@ -308,8 +316,8 @@ function PersonalProjects() {
     <div className="personal-projects">
       <div className="project-copy">
         <p className="eyebrow">Projets personnels</p>
-        <h3>Les environnements que je construis en dehors des cours.</h3>
-        <p>Deux projets suivis dans le temps, utilisés pour expérimenter, développer et apprendre avec de vraies contraintes.</p>
+        <h3>Perso. Hors cours.</h3>
+        <p>Homelab, développement, expérimentation.</p>
         <div className="project-index">
           {personalProjects.map((item, index) => (
             <span key={item.title}><i>0{index + 1}</i>{item.title}</span>
@@ -327,7 +335,7 @@ function StudyProjects() {
       <div className="subsection-heading">
         <div>
           <p className="eyebrow">Projets d’études</p>
-          <h3>Des sujets techniques, résumés à l’essentiel.</h3>
+          <h3>Études. Mis en pratique.</h3>
         </div>
         <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer">
           Voir GitHub <ArrowUpRight size={16} />
@@ -358,8 +366,7 @@ function Projects() {
     <section id="projets" className="projects-section section-shell">
       <SectionTitle
         eyebrow="Projets"
-        title="Personnel d’un côté. Études de l’autre."
-        copy="Les projets personnels montrent ce que je poursuis sur la durée ; les projets d’études donnent un aperçu des architectures mises en pratique."
+        title="Projets. En pratique."
       />
       <PersonalProjects />
       <StudyProjects />
@@ -378,8 +385,7 @@ function Experiences() {
       <div className="section-shell">
         <SectionTitle
           eyebrow="Expériences"
-          title="Deux contextes. Deux manières de livrer."
-          copy="Du développement d’un prototype à une migration informatique à grande échelle."
+          title="Sur le terrain."
         />
         <motion.div className="experience-window" style={{ rotateX, scale }}>
           <div className="window-bar">
@@ -440,7 +446,7 @@ function JourneyAndActivity() {
           <div className="activity-heading">
             <div>
               <p className="eyebrow">Activité GitHub</p>
-              <h3>Construire régulièrement.</h3>
+              <h3>Au fil des projets.</h3>
             </div>
             <SiGithub />
           </div>
@@ -463,7 +469,7 @@ function JourneyAndActivity() {
               errorMessage="Le calendrier GitHub est momentanément indisponible."
             />
           </div>
-          <p>Données publiques chargées automatiquement depuis le profil <strong>DroGone0</strong>.</p>
+          <p>Activité publique · <strong>DroGone0</strong></p>
           <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer">Ouvrir le profil <ArrowUpRight size={15} /></a>
         </Reveal>
       </div>
@@ -477,8 +483,8 @@ function Contact() {
       <div className="contact-inner">
         <Reveal>
           <p className="eyebrow">Contact</p>
-          <h2>Une alternance, un projet ou simplement une question&nbsp;?</h2>
-          <p>Je suis disponible dès maintenant et mobile autour de Béziers, Montpellier, Narbonne et Toulouse.</p>
+          <h2>Une alternance. Un projet. Parlons-en.</h2>
+          <p>Disponible maintenant · Béziers, Montpellier, Narbonne, Toulouse.</p>
           <div className="contact-actions">
             <a href="mailto:drogoneia@gmail.com" className="action action-white"><Mail size={17} />drogoneia@gmail.com</a>
             <a href="https://github.com/DroGone0" target="_blank" rel="noreferrer" className="action action-outline"><SiGithub size={17} />GitHub</a>
